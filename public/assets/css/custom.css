@@ -1,0 +1,13 @@
+body{
+   font-family: 'Almarai', sans-serif;
+}
+.g{
+   padding: 10px;
+}
+.c{
+   margin: 0px auto;
+}
+.card-header{
+   color: #fff;
+   background-color: #0f4c75;
+}

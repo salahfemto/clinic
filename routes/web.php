@@ -18,5 +18,8 @@ Route::group(['middleware' => 'login'], function () {
    Route::get("getInfo/{id}", "web@getInfo");
    Route::post("add-info", "web@add_info");
    Route::get("patient/{id}", "web@patient");
+   Route::get("add-user", "web@add_user");
+   Route::post("add-user", "web@add_user_post");
+   Route::get("deleteUser/{id}", "web@deleteUser");
 
 });

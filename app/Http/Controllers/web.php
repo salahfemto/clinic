@@ -103,7 +103,8 @@ class web extends Controller
 
       return view("add-date", [
          "user"=>User::where("id", $request->session()->get("user"))->get()[0],
-         "patients"=>$patients
+         "patients"=>$patients,
+         "doctors"=>User::where('type', 1)->get()
       ]);
 
    }
@@ -120,7 +121,7 @@ class web extends Controller
 
       $create = Date::create([
          "p_id"=>$request->p_id,
-         "d_id"=>1,
+         "d_id"=>$request->d_id,
          "date_number"=>$number,
          "notes"=>$request->notes,
          "date"=>$request->date,
@@ -148,8 +149,11 @@ class web extends Controller
 
    public function view_today(Request $request){
 
-      $dates = Date::where("date", date("Y-m-d"))->orderby("time", "ASC")->get();
-
+      if(User::where("id", $request->session()->get("user"))->get()[0]->type == 1){
+         $dates = Date::where("d_id", $request->session()->get("user"))->where("date", date("Y-m-d"))->orderby("time", "ASC")->get();
+      }else{
+         $dates = Date::where("date", date("Y-m-d"))->orderby("time", "ASC")->get();
+      }
       return view("view-today", [
          "user"=>User::where("id", $request->session()->get("user"))->get()[0],
          "dates"=>$dates
@@ -180,6 +184,47 @@ class web extends Controller
          "dates"=>$dates,
          "patient"=>Patient::where("id", $id)->get()[0]
       ]);
+
+   }
+
+   public function add_user(Request $request){
+
+      return view("add-user", [
+         "user"=>User::where("id", $request->session()->get("user"))->get()[0],
+         "users"=>User::where("id", "!=", $request->session()->get("user"))->get()
+      ]);
+
+   }
+
+   public function add_user_post(Request $request){
+
+      $create = User::create([
+         "name"=>$request->name,
+         "username"=>$request->username,
+         "password"=>sha1($request->password),
+         "type"=>$request->type,
+         "phone"=>$request->phone,
+         "address"=>$request->address,
+         "bio"=>$request->bio
+      ]);
+
+      if($create){
+
+         return redirect()->back()->with("success", "تم إضافةالمستخدم بنجاح.");
+
+      }
+
+   }
+
+   public function deleteUser(Request $request){
+
+      $delete = User::where("id", $request->id)->delete();
+
+      if($delete){
+
+         return redirect()->back()->with("success", "تم حذف المستخدم بنجاح.");
+
+      }
 
    }
    

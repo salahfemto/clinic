@@ -32,6 +32,14 @@
                <input type="number" class="form-control" required name="money" placeholder="أدخل هنا...">
             </div>
             <div class="form-group">
+               <label for="">الدكتور</label>
+               <select class="form-control selectpicker" name="d_id" data-live-search="true" required>
+                  @foreach($doctors as $doctor)
+                  <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                  @endforeach
+               </select>
+            </div>
+            <div class="form-group">
                <label for="">نوع الحجز</label>
                <select class="form-control" name="type">
                   <option value="0">كشف</option>
